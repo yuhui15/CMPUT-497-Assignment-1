@@ -12,33 +12,8 @@ def main():
     raw_text = table_sentences['raw_text'].tolist()
     raws = table_tokens['raw_text'].tolist()
 
-    annotation={}
-
-    annotation['``'] = ""
-    annotation['&amp;'] = ""
-    annotation['Mr.'] = ""
-
-    for raw in raws:
-        raw = str(raw)
-        if len(raw.split('-')) > 1 or len(raw.split(' '))>1:
-            annotation[raw] = ""
-
-    del annotation["Dow Jones"]
-    del annotation["solicitor general"]
-
-    sorted_keys = sorted(annotation.keys(), key=len, reverse=True)
-    annotation = {key: annotation[key] for key in sorted_keys}
-
     body = []
-    cnt = 0
     for text in raw_text:
-        cnt += 1
-        for key in annotation.keys():
-            if cnt !=252 or key != "Costa Rica":
-                text = text.replace(key, "?")
-        if cnt == 47:
-            text = text.replace("Dow Jones" , "?")
-
         dict = {}
         dict['text'] = text
         dict['lang'] = 'EN'
@@ -71,20 +46,91 @@ def main():
 
     responses = temp
     instances = table_tokens['instance_id'].tolist()
-    
-    cnt = 0
 
+    index = 0
     with open('wsd_output.txt', 'w', encoding='utf-8') as f:
-        for response, instance in zip(responses, instances):
+        for instance, raw in zip(instances, raws):
+            raw = str(raw)
             if instance is np.nan:
                 pass
             else:
-                f.write(f"{instance} {response['bnSynsetId']}\n")
+                f.write(f"{instance} ")
 
+            if responses[index]["text"] == "'s":
+                responses[index]["text"] = "s"
+
+            if responses[index]["text"] == "''":
+                responses[index]["text"] = "'"
+
+            if responses[index]["text"] == "13,000":
+                responses[index]["text"] = "13000"
+            
+            if responses[index]["text"] == "'":
+                responses[index]["text"] = ""
+
+            if responses[index]["text"] == "'re":
+                responses[index]["text"] = "re"
+            
+            if responses[index]["text"] == "471.50":
+                responses[index]["text"] = "471.5"
+
+            if responses[index]["text"] == "3.540":
+                responses[index]["text"] = "3.54"
+
+            if responses[index]["text"] == "140,000":
+                responses[index]["text"] = "140000"
+
+            if responses[index]["text"] == "140,000":
+                responses[index]["text"] = "140000"
+
+            if responses[index]["text"] == "Latinobarómetro":
+                responses[index]["text"] = "Latinobar��metro"
+
+            if responses[index]["text"] == "Inácio":
+                responses[index]["text"] = "In��cio"
+
+            if responses[index]["text"] == "Chávez":
+                responses[index]["text"] = "Ch��vez"
+
+            if responses[index]["text"] == "Piqué":
+                responses[index]["text"] = "Piqu��"
+
+            if responses[index]["text"] == "Libération":
+                responses[index]["text"] = "Lib��ration"
+            
+            if responses[index]["text"] == "Libération":
+                responses[index]["text"] = "Lib��ration"
+            
+            if responses[index]["text"] == "900,000":
+                responses[index]["text"] = "900000"
+
+            if responses[index]["text"] == "900,000":
+                responses[index]["text"] = "900000"
+            
+            if responses[index]["text"] == "François":
+                responses[index]["text"] = "Fran��ois"
+
+            if responses[index]["text"] == "150,000":
+                responses[index]["text"] = "150000"
+
+            if responses[index]["text"] == "false":
+                responses[index]["text"] = "False"
+            
+            if responses[index]["text"] == "true":
+                responses[index]["text"] = "1"
+            
+            while responses[index]["text"] in raw:
+                #print(responses[index]["text"] , end=" ")
+                if instance is np.nan:
+                    pass
+                else:
+                    f.write(f"{responses[index]['bnSynsetId']} ")
+                index += 1
+                if index >= len(responses):
+                    break
+            if instance is np.nan:
+                pass
+            else:
+                f.write("\n")
+            #print(raw)
 main()
-
-""""
-    for response, raw in zip(responses, raws):
-        cnt+=1
-        print(response['text'],raw,cnt)
-"""
