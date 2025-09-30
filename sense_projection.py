@@ -263,7 +263,7 @@ def main():
     parser.add_argument('--key', type=str, default='se13.key.txt',
                        help='Path to se13.key.txt (gold senses)')
     parser.add_argument('--alignments', type=str, required=True,
-                       help='Path to alignment file (e.g., align_out_inter.txt)')
+                       help='Path to alignment file (e.g., align_out_itermax.txt)')
     parser.add_argument('--english', type=str, default='english_tokens.txt',
                        help='Path to English token file')
     parser.add_argument('--target', type=str, default='chinese_tokens.txt',
