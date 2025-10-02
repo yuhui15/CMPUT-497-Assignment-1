@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-"""
-Task 4: Sense Projection
-Projects BabelNet synset IDs from English tokens to aligned Chinese tokens.
-"""
-
 import pandas as pd
 import ast
 
