@@ -2,7 +2,7 @@
 
 ```
 # For running the main program
-% python ./src/main.py
+% python run_amuse.py
 # For running the test program
 % python ./src/test.py
 ```
